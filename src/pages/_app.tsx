@@ -1,5 +1,8 @@
 import type {AppProps} from 'next/app'
 import {createGlobalStyle} from 'styled-components'
+import AppContext, {defaultUser} from "@/core/context";
+import {useState} from "react";
+import IUser from "../../interface/user.interface";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -11,10 +14,17 @@ const GlobalStyle = createGlobalStyle`
 `
 
 const App = ({Component, pageProps}: AppProps) => {
+  const [user, setUser] = useState(defaultUser)
+  const handleLogin = (candidate: IUser) => {
+    setUser(candidate)
+  }
+
   return (
     <>
-      <GlobalStyle/>
-      <Component {...pageProps} />
+      <AppContext.Provider value={{user, handleLogin}}>
+        <GlobalStyle/>
+        <Component {...pageProps} />
+      </AppContext.Provider>
     </>
   )
 }

@@ -1,8 +1,8 @@
-import HomePage from "../../components/home-page/home-page";
+import LoginPage from "../../components/login-page/login-page";
 
 const Home = () => {
   return (
-    <HomePage/>
+    <LoginPage/>
   )
 }
 

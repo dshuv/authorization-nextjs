@@ -9,17 +9,26 @@ import {
   AuthorizationField,
   Label,
   ErrorMessage, AuthorizationCheckbox, Input, CheckBox, CheckBoxLabel, Button, Border
-} from "../../styled-components/home-page";
+} from "../../styled-components/login-page";
+import {useContext, useEffect} from "react";
+import {users} from "@/pages/api/data/users";
+import AppContext from "@/core/context";
 
 
-export default function HomePage() {
-  // const router = useRouter();
+export default function LoginPage() {
+  const router = useRouter();
+  const {handleLogin} = useContext(AppContext);
+
 
   const {
     register,
     handleSubmit,
     formState: {errors}
   } = useForm<LoginForm>();
+
+  useEffect(() => {
+    localStorage.setItem('users', JSON.stringify(users))
+  }, [users])
 
   const onSubmit: SubmitHandler<LoginForm> = (data) => {
     const users: IUser[] = JSON.parse(localStorage.getItem("users") || "");
@@ -28,7 +37,8 @@ export default function HomePage() {
       if (candidate) {
         if (candidate.password === data.password) {
           console.log(candidate);
-          // router.push(`/profile/${candidate.id}`);
+          handleLogin(candidate)
+          router.push(`/profile/${candidate.id}`).then();
         }
       }
     }
